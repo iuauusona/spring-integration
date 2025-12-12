@@ -8,13 +8,16 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @SpringBootApplication
 @IntegrationComponentScan
 public class SpringIntegrationApplication {
 
     public static void main(String[] args) throws InterruptedException {
-        ConfigurableApplicationContext context = SpringApplication.run(SpringIntegrationApplication.class, args);
+        SpringApplication app = new SpringApplication(SpringIntegrationApplication.class);
+        app.setDefaultProperties(Collections.singletonMap("server.port", "8090"));
+        ConfigurableApplicationContext context = app.run(args);
 
 //        ChannelGateway channelGateway = context.getBean(ChannelGateway.class);
 //        channelGateway.process(new Product("Milk", 34.34));
