@@ -1,6 +1,9 @@
 package com.isagulova.springintegration.integration;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.http.outbound.HttpRequestExecutingMessageHandler;
+import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
@@ -25,5 +28,13 @@ public class FirstServiceActivator {
 //        System.out.println("Payload -> " + payload);
 //        System.out.println("********** NEWS **********");
 //    }
+
+    public MessageHandler productsOut() {
+        HttpRequestExecutingMessageHandler handler =
+                new HttpRequestExecutingMessageHandler("http://localhost:8080/products");
+        handler.setCharset("UTF-8");
+        handler.setHttpMethod(HttpMethod.GET);
+        return handler;
+    }
 
 }
