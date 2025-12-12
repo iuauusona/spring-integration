@@ -1,15 +1,11 @@
 package com.isagulova.springintegration;
 
-import com.isagulova.springintegration.domain.Product;
-import com.isagulova.springintegration.integration.ChannelGateway;
+
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.integration.annotation.IntegrationComponentScan;
-import org.springframework.integration.channel.DirectChannel;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.PollableChannel;
-import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.Arrays;
 
