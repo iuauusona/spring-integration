@@ -19,19 +19,32 @@ public class SpringIntegrationApplication {
 
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext context = SpringApplication.run(SpringIntegrationApplication.class, args);
+
+        ChannelGateway channelGateway = context.getBean(ChannelGateway.class);
+        channelGateway.process(new Product("Milk", 34.34));
+        channelGateway.process(new Product("Chocolate", 114.34));
+
         DirectChannel invokeCallGetProducts = context.getBean("invokeCallGetProducts", DirectChannel.class);
         invokeCallGetProducts.send(MessageBuilder.withPayload("").build()); //empty message for initialization
-        PollableChannel productsChannel = context.getBean("get_products_channel", PollableChannel.class);
-        new Thread(() -> {
-            while(true) {
-                Message<?> receive = productsChannel.receive();
-                System.out.println(receive);
-            }
-        }).start();
 
-        Thread.sleep(5000);
-        System.out.println("Go next message");
-        invokeCallGetProducts.send(MessageBuilder.withPayload("").build());
+        PollableChannel productsChannel = context.getBean("get_products_channel", PollableChannel.class);
+        Message<?> receive = productsChannel.receive();
+        System.out.println(receive);
+        System.out.println(receive.getPayload());
     }
+//        DirectChannel invokeCallGetProducts = context.getBean("invokeCallGetProducts", DirectChannel.class);
+//        invokeCallGetProducts.send(MessageBuilder.withPayload("").build()); //empty message for initialization
+//        PollableChannel productsChannel = context.getBean("get_products_channel", PollableChannel.class);
+//        new Thread(() -> {
+//            while(true) {
+//                Message<?> receive = productsChannel.receive();
+//                System.out.println(receive);
+//            }
+//        }).start();
+//
+//        Thread.sleep(5000);
+//        System.out.println("Go next message");
+//        invokeCallGetProducts.send(MessageBuilder.withPayload("").build());
+//    }
 
 }

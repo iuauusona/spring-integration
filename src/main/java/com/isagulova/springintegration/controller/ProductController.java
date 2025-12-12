@@ -13,8 +13,8 @@ import java.util.List;
 @RequestMapping("products")
 public class ProductController {
 
-//    @Value("${server.port:8080}")
-//    private int port;
+    @Value("${server.port:8080}")
+    private int port;
 
     private static List<Product> products = new ArrayList<>();
 
@@ -27,7 +27,7 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getProducts() {
-//        System.out.println("Server port -> " + port);
+        System.out.println("Server port -> " + port);
         return products;
     }
 }
