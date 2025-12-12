@@ -1,5 +1,7 @@
 package com.isagulova.springintegration;
 
+import com.isagulova.springintegration.domain.Product;
+import com.isagulova.springintegration.integration.ChannelGateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -16,15 +18,9 @@ public class SpringIntegrationApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(SpringIntegrationApplication.class, args);
-        Message<String> message = MessageBuilder
-                .withPayload("It is a body")
-                .setHeader("StringHeader", "Value")
-                .setHeader("IntHeader", 1)
-                .setHeader("ListOfStrings", Arrays.asList("String1", "String2"))
-                .build();
-
-        DirectChannel channel = context.getBean(DirectChannel.class);
-        channel.send(message);
+        ChannelGateway channelGateway = context.getBean(ChannelGateway.class);
+        channelGateway.process(new Product("Milk", 34.34));
+        channelGateway.process(new Product("Chocolate", 114.34));
     }
 
 }
