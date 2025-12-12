@@ -17,14 +17,21 @@ import java.util.Arrays;
 @IntegrationComponentScan
 public class SpringIntegrationApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext context = SpringApplication.run(SpringIntegrationApplication.class, args);
         DirectChannel invokeCallGetProducts = context.getBean("invokeCallGetProducts", DirectChannel.class);
         invokeCallGetProducts.send(MessageBuilder.withPayload("").build()); //empty message for initialization
         PollableChannel productsChannel = context.getBean("get_products_channel", PollableChannel.class);
-        Message<?> receive = productsChannel.receive();
-        System.out.println(receive);
-        System.out.println(receive.getPayload());
+        new Thread(() -> {
+            while(true) {
+                Message<?> receive = productsChannel.receive();
+                System.out.println(receive);
+            }
+        }).start();
+
+        Thread.sleep(5000);
+        System.out.println("Go next message");
+        invokeCallGetProducts.send(MessageBuilder.withPayload("").build());
     }
 
 }
